@@ -56,7 +56,7 @@ $(function() {
 				$("#chatBox-content-demo").animate({'scrollTop':$("#chatBox-content-demo")[0].scrollHeight},1000);
 				//$("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
 			});
-		},500);
+		},2000);
 		
 	};
 	//      发送信息

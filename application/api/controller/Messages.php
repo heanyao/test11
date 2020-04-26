@@ -63,9 +63,12 @@ class Messages extends Common
 
     //私信列表
     public function mymsglist()
-    {   
-
-        $res=$this->obj->get_msg_list($this->uid);
+    {
+        $page = $this->request->get('page');
+        $pageSize = $this->request->get('page_size');
+        $page = intval($page);
+        $pageSize = intval($pageSize);
+        $res=$this->obj->get_msg_list($this->uid, $page, $pageSize);
         // dump($res);die;
         $this->returnMsg(200, '查询成功', $res);
     }

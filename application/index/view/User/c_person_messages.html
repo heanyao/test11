@@ -57,9 +57,10 @@
 					
  					<div id="">
 						<el-pagination
-								:pagesize="20"
 								layout="prev, pager, next"
-								:total="msg_count">
+								@current-change="handleCurrentChange"
+								:total= msg_count
+								:page-size= page_size>
 						</el-pagination>
 					</div>
 				</div>
@@ -133,6 +134,8 @@
 							}
 						],
 						msg_count:0,
+						page_size:1,
+						page:1,
 						msg_list: [],
 						show_list: [],
 						my_id:1,
@@ -157,7 +160,9 @@
 
 						//删除localstorage中的聊天记录
 						localStorage.removeItem('dialoglist_'+id);
-						
+						console.log('id', id);
+						console.log(events.path[3]);
+						events.path[3].remove();
 						// $.ajax({
 						// 	url: api_address + '/api/messages/delmsg?from_uid=' + id,
 						// 	type: 'get',
@@ -172,6 +177,33 @@
 						// 	}
 						// });
 					},
+
+
+					handleCurrentChange(val) {
+						console.log(`当前页: ${val}`);
+						this.page = val;
+						this.get_msg_list();
+						// var vm = this;
+						// $.ajax({
+						// 	url: api_address + '/api/messages/mymsglist/?page='+val+'&page_size='+vm.page_size,
+						// 	type: 'get',
+						// 	dataType: 'json',
+						// 	success: function(data) {
+						// 		console.log(data);
+						// 		if (data.code === 200) {
+						// 			vm.msg_list = data.data;
+						// 			vm.$forceUpdate();
+						// 		}
+						// 		vm.show_list = vm.msg_list;
+						//
+						// 	},
+						// 	error: function(e) {
+						// 		console.log(e)
+						// 	}
+						// });
+					},
+
+
 					sx_checked: function(e) {
 						var el = event.currentTarget;
 						if (this.is_only_readed) {
@@ -208,7 +240,7 @@
 					get_msg_list:function(){
 						var vm = this;
 						$.ajax({
-							url: api_address + '/api/messages/mymsglist',
+							url: api_address + '/api/messages/mymsglist/?page='+vm.page+'&page_size='+vm.page_size,
 							type: 'get',
 							dataType: 'json',
 							success: function(data) {

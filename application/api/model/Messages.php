@@ -41,7 +41,7 @@ class Messages extends Model
         return $ret;
     }
 
-    public function get_msg_list($to_uid){
+    public function get_msg_list($to_uid, $page=1, $pageSize=20){
 
             $model=model('messages');
          // $map['m.to_uid']  = $to_uid;
@@ -71,8 +71,8 @@ class Messages extends Model
         // $offset = $pageNumber_one * $limit;//查询偏移值
 
 
-
-        $sql= " SELECT m.status,m.id,m.from_uid,m.content,m.addtime,u.name,u.head_img_url FROM `bk_messages` `m` INNER JOIN `bk_user` `u` ON `u`.`id`=`m`.`from_uid` where m.to_uid = '".$to_uid."' AND m.id in(select max(id) from bk_messages group by from_uid) order by m.status desc ;  " ;
+        $offset = ($page-1)*$pageSize;
+        $sql= " SELECT m.status,m.id,m.from_uid,m.content,m.addtime,u.name,u.head_img_url FROM `bk_messages` `m` INNER JOIN `bk_user` `u` ON `u`.`id`=`m`.`from_uid` where m.to_uid = '".$to_uid."' AND m.id in(select max(id) from bk_messages group by from_uid) order by m.status desc   limit {$offset}, {$pageSize};" ;
 
         $ret = $model->query($sql);
         // $count =count($ret);
