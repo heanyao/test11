@@ -69,6 +69,13 @@ class Messages extends Common
         // dump($res);die;
         $this->returnMsg(200, '查询成功', $res);
     }
+    /*
+     *私信数量
+     */
+    public function mymsgcount(){
+        $res=$this->obj->get_msg_count($this->uid);
+        $this->returnMsg(200, '查询成功', $res);
+    }
 
     //删除私信
     public function delmsg()

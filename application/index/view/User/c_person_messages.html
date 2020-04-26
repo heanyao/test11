@@ -55,9 +55,13 @@
 
 					</div>
 					
-<!-- 					<div id="">
-						分页
-					</div> -->
+ 					<div id="">
+						<el-pagination
+								:pagesize="20"
+								layout="prev, pager, next"
+								:total="msg_count">
+						</el-pagination>
+					</div>
 				</div>
 			</div>
 	{include file="public/footer"}		
@@ -128,6 +132,7 @@
 								title: '黑名单管理'
 							}
 						],
+						msg_count:0,
 						msg_list: [],
 						show_list: [],
 						my_id:1,
@@ -149,20 +154,23 @@
 					del_msg: function(id, events) {
 						var vm =this;
 						events.cancelBubble = true;
+
+						//删除localstorage中的聊天记录
+						localStorage.removeItem('dialoglist_'+id);
 						
-						$.ajax({
-							url: api_address + '/api/messages/delmsg?from_uid=' + id,
-							type: 'get',
-							dataType: 'json',
-							success: function(data) {
-								Dialog.warn("提示", data.msg);
-								$('.mini-dialog-footer').css('height', '64px');
-								vm.get_msg_list();
-							},
-							error: function(e) {
-								console.log(e);
-							}
-						});
+						// $.ajax({
+						// 	url: api_address + '/api/messages/delmsg?from_uid=' + id,
+						// 	type: 'get',
+						// 	dataType: 'json',
+						// 	success: function(data) {
+						// 		Dialog.warn("提示", data.msg);
+						// 		$('.mini-dialog-footer').css('height', '64px');
+						// 		vm.get_msg_list();
+						// 	},
+						// 	error: function(e) {
+						// 		console.log(e);
+						// 	}
+						// });
 					},
 					sx_checked: function(e) {
 						var el = event.currentTarget;
@@ -177,6 +185,25 @@
 							this.show_list = this.no_readed;
 						}
 
+					},
+					get_msg_count:function(){
+						var vm = this;
+						$.ajax({
+							url: api_address + '/api/messages/mymsgcount',
+							type: 'get',
+							dataType: 'json',
+							success: function(data) {
+								console.log(data);
+								if (data.code === 200) {
+									vm.msg_count = data.data.total;
+									vm.$forceUpdate();
+								}
+								vm.msg_count = vm.msg_count;
+							},
+							error: function(e) {
+								console.log(e)
+							}
+						});
 					},
 					get_msg_list:function(){
 						var vm = this;
@@ -207,6 +234,7 @@
 					}
 				},
 				mounted: function() {
+					this.get_msg_count();
 					this.get_msg_list();
 				}
 			});

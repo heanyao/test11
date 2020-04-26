@@ -85,6 +85,16 @@ class Messages extends Model
     return $ret;
     }
 
+    /*
+     * @30324143
+     */
+    public function get_msg_count($to_uid){
+        $model=model('messages');
+        $sql= " SELECT count(*) as total FROM `bk_messages` `m` INNER JOIN `bk_user` `u` ON `u`.`id`=`m`.`from_uid` where m.to_uid = '".$to_uid."' AND m.id in(select max(id) from bk_messages group by from_uid) order by m.status desc ;  " ;
+
+        $ret = $model->query($sql);
+        return empty($ret) ? 0 : $ret[0];
+    }
 
    //消息删除
     public function del_msg($from_uid,$to_uid){

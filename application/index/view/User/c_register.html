@@ -7,8 +7,8 @@
     <title>register</title>
     <script src="__INDEX__/style/jquery-1.8.3.min.js"></script>
     <link rel="stylesheet" href="__INDEX__/style/element-ui.css">
-    <script src="__INDEX__/style/element-ui.js"></script>
     <script src="__INDEX__/style/vue.min.js"></script>
+    <script src="__INDEX__/style/element-ui.js"></script>
     <link rel="stylesheet" href="__INDEX__/style/layer.css"/>
     <link rel="stylesheet" type="text/css" href="__INDEX__/style/c_style.css"/>
     <script src="__INDEX__/style/layer.js"></script>
@@ -50,13 +50,10 @@
                         <p>注册</p>
                         <div class="form-control phone_control">
                             <div v-clock class="select-area-code">
-                                <img @click="select_country"
-                                     :src="imgsrc"
-                                     class="select_country">
+                                <img @click="select_country" :src="imgsrc" class="select_country">
                                 <span @click="select_country" class="select_country" id="countryCode">{{areacode}}</span>
                                 <i class="el-icon-caret-bottom"></i>
-                                <input id="register_phone" type="tel" v-model="phone" placeholder="请输入手机号"
-                                       class="phone_input account">
+                                <input id="register_phone" type="tel" v-model="phone" placeholder="请输入手机号" class="phone_input account">
                             </div>
                         </div>
                         <div class="form-control code_control">

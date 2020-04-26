@@ -184,7 +184,8 @@
 						return style;
 					},
 					big_img:function(e){
-						
+
+						console.log($(e.currentTarget))
 						var _this = $(e.currentTarget); //将当前的pimg元素作为_this传入函数
 						imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
 					}
@@ -205,8 +206,13 @@
 							if (data.code !== 200) {
 								return;
 							}
-							vm.sx_box_list = data.data;
-							vm.$forceUpdate();
+							localStorage.removeItem('dialoglist_'+f_id);
+							let dialoglist = JSON.stringify(data.data);
+							localStorage.setItem('dialoglist_'+f_id, dialoglist);
+							setTimeout(function () {
+								vm.sx_box_list = data.data;
+								vm.$forceUpdate();
+							}, 1000)
 
 						},
 						error: function(e) {
@@ -218,6 +224,11 @@
 					
 				}
 			});
+			function check_big_img(e) {
+				console.log($(e))
+				var _this = $(e); //将当前的pimg元素作为_this传入函数
+				imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+			}
 		</script>
 	</body>
 </html>

@@ -88,6 +88,9 @@ $(function() {
 						$(document).ready(function() {
 							$("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
 						});
+
+						storageMsg(data.data);
+
 					}
 				}else{
 				Dialog.warn("提示", data.msg);
@@ -143,6 +146,8 @@ $(function() {
 						$(document).ready(function() {
 							$("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
 						});
+
+						storageMsg(data.data);
 					}
 				},
 				error: function(e) {
@@ -202,16 +207,32 @@ function add_to_msg_img(url) {
 			if (data.code == 200) {
 				$(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
 					"<div class=\"author-name\"><small class=\"chat-date\">" + f_Date(data.data.addtime) + "</small> </div> " +
-					"<div class=\"right\"> <div class=\"chat-message\"><img src=" + api_address + data.data.content + "></div> " +
+					"<div class=\"right\"> <div class=\"chat-message\"><img style=\"cursor: pointer;\" onclick=\"check_big_img(this)\" src=" + api_address + data.data.content + "></div> " +
 					"<div class=\"chat-avatars\"><img src=" + my_h_img + " alt=\"头像\" /></div> </div> </div>");
 				//聊天框默认最底部
 				$(document).ready(function() {
 					$("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);
 				});
+				data.data.content = data.data.content.replace(/\\/g,"/");
+				storageMsg(data.data);
 			}
 		},
 		error: function(e) {
 			console.log(e);
 		}
 	});
+}
+
+
+function storageMsg(data) {
+	let msg = '{"content":"'+data.content+'","type":'+data.type+',"addtime":'+data.addtime+'}';
+	msg = JSON.parse(msg);
+
+	let dialoglist = localStorage.getItem('dialoglist_'+f_id);
+	dialoglist = JSON.parse(dialoglist);
+	dialoglist = Array.from(dialoglist);
+	dialoglist.push(msg);
+	localStorage.removeItem('dialoglist_'+f_id);
+	dialoglist = JSON.stringify(dialoglist);
+	localStorage.setItem('dialoglist_'+f_id, dialoglist);
 }
