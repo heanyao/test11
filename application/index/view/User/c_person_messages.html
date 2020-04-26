@@ -36,7 +36,7 @@
 						</span>
 					</div>
 					<div class="c_message_box c_row">
-						<div class="c_msg_items c_row" @click="to_msg(item.from_uid,item.head_img_url,item.name)" v-cloak v-for="(item,idx) in show_list" :key="idx">
+						<div :id="'message_'+item.from_uid" class="c_msg_items c_row" @click="to_msg(item.from_uid,item.head_img_url,item.name)" v-cloak v-for="(item,idx) in show_list" :key="idx">
 							<div class="c_msg_tx">
 								<img :src="api_address+item.head_img_url">
 							</div>
@@ -134,7 +134,7 @@
 							}
 						],
 						msg_count:0,
-						page_size:1,
+						page_size:20,
 						page:1,
 						msg_list: [],
 						show_list: [],
@@ -161,8 +161,7 @@
 						//删除localstorage中的聊天记录
 						localStorage.removeItem('dialoglist_'+id);
 						console.log('id', id);
-						console.log(events.path[3]);
-						events.path[3].remove();
+						$("#message_"+id).remove()
 						// $.ajax({
 						// 	url: api_address + '/api/messages/delmsg?from_uid=' + id,
 						// 	type: 'get',
