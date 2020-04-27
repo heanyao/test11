@@ -14,11 +14,11 @@ class Messages extends Common
     }
 
 
-    public function index()
-    {  
+    // public function index()
+    // {  
   
-    return view();
-    }
+    // return view();
+    // }
 
     //我的关注列表
     public function myfocuslist()
@@ -63,7 +63,9 @@ class Messages extends Common
 
     //私信列表
     public function mymsglist()
-    {
+    {   
+
+        // $res=$this->obj->get_msg_list($this->uid);
         $page = $this->request->get('page');
         $pageSize = $this->request->get('page_size');
         $page = intval($page);
@@ -72,6 +74,7 @@ class Messages extends Common
         // dump($res);die;
         $this->returnMsg(200, '查询成功', $res);
     }
+
     /*
      *私信数量
      */
@@ -84,7 +87,7 @@ class Messages extends Common
     public function delmsg()
     {    
         $from_uid=input('from_uid'); 
-        $to_uid=$this->uid; 
+        $to_uid=$this->uid;
         $res=$this->obj->del_msg($from_uid,$to_uid);
         // dump($res);die;
         if($res){
@@ -99,8 +102,10 @@ class Messages extends Common
     //发送私信逻辑
     public function sendmsg(){
         $toUid=(int)input('post.from_uid');
-        $content=input('post.content');
+        $content=trim(input('post.content'));
         $type=(int)input('post.type');
+        $content = str_replace("<br>", " ", $content);  
+
         //内容 为空不能发送
         if(!$content){
             $this->returnMsg(444, '发送失败');

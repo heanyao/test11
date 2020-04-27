@@ -209,7 +209,7 @@
                     data:{'user_name':phone,'code':code,'time':timestamp,'country_code':areacode},
                     success:function (data) {
                         if(data.code===200){
-                            window.location.assign('{:url('login/c_person_safe')}') 
+                            window.location.assign('{:url('user/c_person_safe')}') 
                         }else{
                             lay.tips(data.msg, '#new_phone');
                             return;

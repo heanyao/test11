@@ -36,7 +36,7 @@
 						</span>
 					</div>
 					<div class="c_message_box c_row">
-						<div :id="'message_'+item.from_uid" class="c_msg_items c_row" @click="to_msg(item.from_uid,item.head_img_url,item.name)" v-cloak v-for="(item,idx) in show_list" :key="idx">
+						<div :id="'message_'+item.from_uid" class="c_msg_items c_row" @click="to_msg(item.from_uid,item.head_img_url,item.name)" v-cloak v-for="(item,idx) in show_list" :key="item.from_uid">
 							<div class="c_msg_tx">
 								<img :src="api_address+item.head_img_url">
 							</div>
@@ -134,7 +134,7 @@
 							}
 						],
 						msg_count:0,
-						page_size:20,
+						page_size:20,//修改每页显示条数
 						page:1,
 						msg_list: [],
 						show_list: [],
@@ -159,27 +159,30 @@
 						events.cancelBubble = true;
 
 						//删除localstorage中的聊天记录
-						localStorage.removeItem('dialoglist_'+id);
-						console.log('id', id);
+						// localStorage.removeItem('dialoglist_'+id);
+						// console.log('id', id);
 						$("#message_"+id).remove()
-						// $.ajax({
-						// 	url: api_address + '/api/messages/delmsg?from_uid=' + id,
-						// 	type: 'get',
-						// 	dataType: 'json',
-						// 	success: function(data) {
-						// 		Dialog.warn("提示", data.msg);
-						// 		$('.mini-dialog-footer').css('height', '64px');
-						// 		vm.get_msg_list();
-						// 	},
-						// 	error: function(e) {
-						// 		console.log(e);
-						// 	}
-						// });
+						$.ajax({
+							url: api_address + '/api/messages/delmsg?from_uid=' + id,
+							type: 'get',
+							dataType: 'json',
+							success: function(data) {
+								Dialog.warn("提示", data.msg);
+								$('.mini-dialog-footer').css('height', '64px');
+								vm.page = 1;
+								vm.get_msg_count();
+								vm.get_msg_list();
+								setTimeout(function(){
+								window.location.reload();
+							}, 2000);
+							},
+							error: function(e) {
+								console.log(e);
+							}
+						});
 					},
 
-
 					handleCurrentChange(val) {
-						console.log(`当前页: ${val}`);
 						this.page = val;
 						this.get_msg_list();
 						// var vm = this;
@@ -201,8 +204,6 @@
 						// 	}
 						// });
 					},
-
-
 					sx_checked: function(e) {
 						var el = event.currentTarget;
 						if (this.is_only_readed) {
@@ -229,7 +230,7 @@
 									vm.msg_count = data.data.total;
 									vm.$forceUpdate();
 								}
-								vm.msg_count = vm.msg_count;
+								// vm.msg_count = vm.msg_count;
 							},
 							error: function(e) {
 								console.log(e)
@@ -249,7 +250,7 @@
 									vm.$forceUpdate();
 								}
 								vm.show_list = vm.msg_list;
-								
+								console.log(vm.show_list)
 							},
 							error: function(e) {
 								console.log(e)

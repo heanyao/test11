@@ -74,9 +74,6 @@
 
 <script src="__INDEX__/style/c_index.js"></script>
 <script>
-    function getApi() {
-        return __HOMEURL__ ;
-    }
     new Vue({
         el: '#app',
         data: function () {
@@ -112,7 +109,7 @@
             up_file: function () {
                 let self = this;
                 let file = $("#tx_file").val();
-                let apiAddress = getApi();
+                let apiAddress = __HOMEURL__;
                 let user_id= self.user_id;
                 let time = new Date().getTime();
                 let fileimg = $("#tx_file").prop('files')[0];

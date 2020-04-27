@@ -146,7 +146,7 @@ return [
     'view_replace_str'       => [
     '__INDEX__'=>'/static/index',
     // '__HOUSINGDETAIL__'=>"http://fin110.cc/propertydetail",
-    '__ROOTURL__'=>'http://fin110.cc',
+    '__ROOTURL__'=>'http://fin110.com',
     '__PUBLIC__'=>'/public/',
     '__ROOT__' => '/',
     '__ADMIN__' => '/static/admin',
